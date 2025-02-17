@@ -39,3 +39,6 @@ terraform.rc
 ## .env files
 **/*.env
 *.env
+
+## exclude backend/
+backend/*
