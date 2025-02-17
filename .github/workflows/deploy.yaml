@@ -14,34 +14,41 @@ on:
       - 'templates/*'
       - 'modules/*/*.tf'
     pull_request:
-      types: [opened, reopened]
+      - 'feature/*'
+      - 'feat/*'
+      - 'fix/*'
+    paths:
+      - '*.tf'
+      - '*..vars'
+      - 'templates/*'
+      - 'modules/*/*.tf'
+#      types: [opened, reopened]
   workflow_dispatch:
 
 jobs:
   deploy:
-    environment: dev
 
 #    environment: |
 #      ${{ startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/') && 'dev' }}
 
     runs-on: ubuntu-latest
+    environment: dev
+
     steps:
       - name: Debug Secrets
         run: |
-           echo "Checking AWS_ACCESS_KEY_ID..."
-           if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
-              echo "❌ AWS_ACCESS_KEY_ID is missing!"
+           echo "Checking DEBUGING"
+           if [ -z "${{ vars.DEBUGING }}" ]; then
+              echo "❌ DEBUGING is missing!"
               exit 1
            else
-              echo "✅ AWS_ACCESS_KEY_ID is available."
-           fi
-
-           echo "Checking AWS_S3_BACKEND..."
-           if [ -z "${{ secrets.AWS_S3_BACKEND }}" ]; then
-              echo "❌ ¡AWS_S3_BACKEND is missing!"
-              exit 1
-           else
-              echo "✅ AWS_S3_BACKEND is available."
+              echo "✅ DEBUGING is available."
+              echo "Branch: ${{ github.ref }}"
+              echo "Event: ${{ github.event_name }}"
+              echo "Repository: ${{ github.repository }}"
+              echo "Actor: ${{ github.actor }}"
+              echo "Environment: ${{ env.ENVIRONMENT }}"
+              echo "Content: ${{ vars.DEBUGING }}"
            fi
 
 #      - name: Checkout Code
