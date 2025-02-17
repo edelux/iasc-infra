@@ -13,7 +13,8 @@ on:
       - '*..vars'
       - 'templates/*'
       - 'modules/*/*.tf'
-    pull_request:
+  pull_request:
+    branches:
       - 'feature/*'
       - 'feat/*'
       - 'fix/*'
