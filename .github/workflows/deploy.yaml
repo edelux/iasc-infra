@@ -1,0 +1,56 @@
+---
+name: Deploy Infrastructure
+run-name: Deploy Workflow
+
+on:
+  push:
+    branches:
+      - 'fix/*'
+      - 'feat/*'
+      - 'feature/*'
+    path:
+      - '*.tf'
+      - '*..vars'
+      - 'templates/*'
+      - 'modules/*/*.tf'
+    type:
+      - opened
+      - reopened
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment: |
+      ${{ startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/') && 'dev' }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup AWS Credentials
+        uses: aws-actions/configure-aws-credentials@4
+        with:
+          region: ${{ vars.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Backend
+        run: |
+          if aws s3 ls "s3://${{ secrets.AWS_S3_BACKEND }}" 2>&1 | grep -q 'NoSuchBucket'; then
+            echo "⚠️ Bucket not found, It will be created"
+
+            mkdir -p backend
+            j2 templates/backend.bootstrap.j2 > backend/main.tf
+            terraform -chdir=backend workspace new bootstrap || true
+            terraform -chdir=backend init -no-color
+            terraform -chdir=backend apply -auto-approve -no-color
+            echo "✅ Terraform backend created successfully."
+
+            aws s3 cp backend/terraform.tfstate.d/bootstrap/terraform.tfstate s3://${{ secrets.AWS_S3_BACKEND }}/bootstrap/ 
+            echo "✨ Terraform backed up successfully."
+          else
+            echo "♻️ S3 bucket already exists."
+          fi
+
