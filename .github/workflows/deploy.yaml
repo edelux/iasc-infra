@@ -19,7 +19,7 @@ on:
 
 jobs:
   deploy:
-    environment: ${{ env.ENVIRONMENT }}
+    environment: dev
 
 #    environment: |
 #      ${{ startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/') && 'dev' }}
