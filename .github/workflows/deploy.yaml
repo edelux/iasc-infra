@@ -52,6 +52,7 @@ jobs:
           if aws s3 ls "s3://${{ secrets.AWS_S3_BACKEND }}" 2>&1 | grep -q 'NoSuchBucket'; then
             echo "⚠️ Bucket not found, It will be created"
 
+            (sudo apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC sudo apt-get install -y j2cli)
             mkdir -p backend
             j2 templates/backend.bootstrap.j2 > backend/main.tf
             terraform -chdir=backend workspace new bootstrap || true
