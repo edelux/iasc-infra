@@ -10,7 +10,7 @@ on:
       - 'feature/*'
     paths:
       - '*.tf'
-      - '*..vars'
+      - '*.vars'
       - 'templates/*'
       - 'modules/*/*.tf'
   pull_request:
@@ -20,7 +20,7 @@ on:
       - 'fix/*'
     paths:
       - '*.tf'
-      - '*..vars'
+      - '*.vars'
       - 'templates/*'
       - 'modules/*/*.tf'
 #      types: [opened, reopened]
