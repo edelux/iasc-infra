@@ -50,6 +50,7 @@ jobs:
               echo "Actor: ${{ github.actor }}"
               echo "Environment: ${{ env.ENVIRONMENT }}"
               echo "Content: ${{ vars.DEBUGING }}"
+              env
            fi
 
 #      - name: Checkout Code
