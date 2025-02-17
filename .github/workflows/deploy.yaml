@@ -8,14 +8,13 @@ on:
       - 'fix/*'
       - 'feat/*'
       - 'feature/*'
-    path:
+    paths:
       - '*.tf'
       - '*..vars'
       - 'templates/*'
       - 'modules/*/*.tf'
-    type:
-      - opened
-      - reopened
+    pull_request:
+      types: [opened, reopened]
   workflow_dispatch:
 
 jobs:
