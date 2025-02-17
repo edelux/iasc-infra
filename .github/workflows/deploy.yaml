@@ -27,9 +27,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    environment: |
-      ${{ startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/') && 'dev' }}
-
+#    environment: |
+#      ${{ startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/') && 'dev' }}
+    environment: dev
     steps:
       - name: Debug Secrets
         run: |
