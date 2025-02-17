@@ -54,7 +54,8 @@ jobs:
 
             (sudo apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC sudo apt-get install -y j2cli) 2>&1 >/dev/null && echo "✅j2 Installed success" || echo "💥¡Install Failed!"
             mkdir -p backend
-            j2 templates/backend.bootstrap.j2 -o backend/main.tf -D AWS_REGION="${{ vars.AWS_REGION }}" -D AWS_S3_BACKEND="${{ secrets.AWS_S3_BACKEND }}"
+            export AWS_S3_BACKEND="${{ secrets.AWS_S3_BACKEND }}"
+            j2 templates/backend.bootstrap.j2 -e AWS_S3_BACKEND -o backend/main.tf
             terraform -chdir=backend workspace new bootstrap || true
             terraform -chdir=backend init -no-color
             terraform -chdir=backend apply -auto-approve -no-color
