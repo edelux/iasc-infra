@@ -2,7 +2,10 @@
 name: Runner Configure
 run-name: runner config workflow
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   apt-install:
