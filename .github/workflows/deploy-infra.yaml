@@ -56,10 +56,12 @@ jobs:
 
       - name: Create Terraform Backend
         run: |
-          export AWS_REGION="${{ vars.AWS_REGION }}"
-          export AWS_S3_BACKEND="${{ secrets.AWS_S3_BACKEND }}"
+          export AWS_REGION=${{ vars.AWS_REGION }}
+          export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
 
-          echo j2 -e AWS_REGION -e AWS_S3_BACKEND templates/backend.bootstrap.j2 -o backend/main.tf
+          mkdir -p backend
+          j2 -e AWS_REGION -e AWS_S3_BACKEND templates/backend.bootstrap.j2 -o backend/main.tf
+          cat backend/main.tf
           ## Create Bucket if not exist
 #          if aws s3 ls "s3://${{ secrets.AWS_S3_BACKEND }}" 2>&1 | grep -q 'NoSuchBucket'; then
 #            echo "⚠️ Bucket not found, It will be created"
