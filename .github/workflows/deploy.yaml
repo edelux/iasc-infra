@@ -1,4 +1,20 @@
 ---
+name: Runner Configure
+run-name: runner config workflow
+
+on: [push]
+
+jobs:
+  apt-install:
+    runs-on: ubuntu-latest
+
+    steps:
+      name: apt install
+      run: |
+        apt update 2>&1> /dev/null
+        test -e /usr/bin/j2       ||  apt install -y j2cli 2>&1> /dev/null    && echo "✨ j2 -> Istalled sussesfuly"        || echo "💥 j2 -> Installed faulere"
+        test -e /usr/bin/envsubst ||  apt install -y gettext 2>&1> /dev/null  && echo "✨ envsubst -> Istalled sussesfuly"  || echo "💥 envsubst -> Installed faulere"
+
 name: Deploy Infrastructure
 run-name: Deploy Workflow
 
@@ -31,9 +47,6 @@ jobs:
     environment: dev
 
     steps:
-      - name: Set Environment
-        run:  echo "ENVIRONMENT=dev" >> $GITHUB_ENV
-
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -52,7 +65,6 @@ jobs:
           if aws s3 ls "s3://${{ secrets.AWS_S3_BACKEND }}" 2>&1 | grep -q 'NoSuchBucket'; then
             echo "⚠️ Bucket not found, It will be created"
 
-            (sudo apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC sudo apt-get install -y j2cli) 2>&1 >/dev/null && echo "✅j2 Installed success" || echo "💥¡Install Failed!"
             mkdir -p backend
             export AWS_S3_BACKEND="${{ secrets.AWS_S3_BACKEND }}"
             j2 templates/backend.bootstrap.j2 -e AWS_S3_BACKEND -o backend/main.tf
@@ -66,3 +78,6 @@ jobs:
           else
             echo "♻️ S3 bucket already exists."
           fi
+
+      - name: Backend config file
+        run:
