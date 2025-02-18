@@ -88,6 +88,7 @@ jobs:
       - name: Terraform init
         run: |
           export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
-          j2 -e AWS_S3_BACKEND templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
-          terraform init -backend-config=backend.conf
-          terraform workspace select ${{ env.ENVIRONMENT }} && echo "🚀 terraform workspace list"
+          ls -la
+#          j2 -e AWS_S3_BACKEND templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
+#          terraform init -backend-config=backend.conf
+#          terraform workspace select ${{ env.ENVIRONMENT }} && echo "🚀 terraform workspace list"
