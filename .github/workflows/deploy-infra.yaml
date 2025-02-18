@@ -1,20 +1,4 @@
 ---
-name: Runner Configure
-run-name: runner config workflow
-
-on: [push]
-
-jobs:
-  apt-install:
-    runs-on: ubuntu-latest
-
-    steps:
-      name: apt install
-      run: |
-        apt update 2>&1> /dev/null
-        test -e /usr/bin/j2       ||  apt install -y j2cli 2>&1> /dev/null    && echo "✨ j2 -> Istalled sussesfuly"        || echo "💥 j2 -> Installed faulere"
-        test -e /usr/bin/envsubst ||  apt install -y gettext 2>&1> /dev/null  && echo "✨ envsubst -> Istalled sussesfuly"  || echo "💥 envsubst -> Installed faulere"
-
 name: Deploy Infrastructure
 run-name: Deploy Workflow
 
