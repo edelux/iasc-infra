@@ -3,6 +3,11 @@ name: Deploy Infrastructure
 run-name: Deploy Workflow
 
 on:
+  workflow_run:
+    workflows: ["Runner Configure"]
+    types:
+      - completed
+
   push:
     branches:
       - 'fix/*'
@@ -13,6 +18,7 @@ on:
       - '*.vars'
       - 'templates/*'
       - 'modules/*/*.tf'
+
   pull_request:
     branches:
       - 'feature/*'
