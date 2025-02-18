@@ -56,14 +56,13 @@ jobs:
 
       - name: Create Terraform Backend
         run: |
-          export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
-          export AWS_BACKEND_KEY_NETWORKING=${{ vars.AWS_BACKEND_KEY_NETWORKING }}
 
           ## Create Bucket if not exist
           if aws s3 ls "s3://${{ secrets.AWS_S3_BACKEND }}" 2>&1 | grep -q 'NoSuchBucket'; then
             echo "⚠️ Bucket not found, It will be created"
 
             mkdir -p backend
+            export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
             j2 -e AWS_S3_BACKEND templates/backend.bootstrap.j2 -o backend/main.tf
             cat backend/main.tf
             terraform -chdir=backend workspace new bootstrap || true
@@ -81,6 +80,7 @@ jobs:
           if aws s3 ls "s3://${{ secrets.AWS_S3_BACKEND }}/env:/${{ env.ENVIRONMENT }}/${{ vars.AWS_BACKEND_KEY_NETWORKING }}" ; then
             echo "♻ S3 terraform state for ${{ env.ENVIRONMENT }} already exists."
           else
+            export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
             j2 -e AWS_S3_BACKEND -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
             terraform init -backend-config=backend.conf -get=false
             terraform workspace new "${{ env.ENVIRONMENT }}" && echo "✨ ${{ env.ENVIRONMENT }} workspace "
