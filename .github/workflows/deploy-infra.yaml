@@ -56,39 +56,36 @@ jobs:
 
       - name: Create Terraform Backend
         run: |
-          export AWS_REGION="${{ vars.AWS_REGION }}"
-          export AWS_S3_BACKEND="${{ secrets.AWS_S3_BACKEND }}"
-          export AWS_BACKEND_KEY_NETWORKING="${{ vars.AWS_BACKEND_KEY_NETWORKING }}"
-
+          echo "j2 -e ${{ vars.AWS_REGION }} -e ${{ secrets.AWS_S3_BACKEND }} templates/backend.bootstrap.j2 -o backend/main.tf"
           ## Create Bucket if not exist
-          if aws s3 ls "s3://${{ secrets.AWS_S3_BACKEND }}" 2>&1 | grep -q 'NoSuchBucket'; then
-            echo "⚠️ Bucket not found, It will be created"
+#          if aws s3 ls "s3://${{ secrets.AWS_S3_BACKEND }}" 2>&1 | grep -q 'NoSuchBucket'; then
+#            echo "⚠️ Bucket not found, It will be created"
+#
+#            mkdir -p backend
+#            j2 -e AWS_S3_BACKEND -e AWS_REGION templates/backend.bootstrap.j2 -o backend/main.tf
+#            terraform -chdir=backend workspace new bootstrap || true
+#            terraform -chdir=backend init -no-color
+#            terraform -chdir=backend apply -auto-approve -no-color
+#            echo "✅ Terraform backend created successfully."
+#
+#            aws s3 cp backend/terraform.tfstate.d/bootstrap/terraform.tfstate s3://${{ secrets.AWS_S3_BACKEND }}/bootstrap/ 
+#            echo "✨ Terraform backed up successfully."
+#          else
+#            echo "♻️ S3 bucket already exists."
+#          fi
 
-            mkdir -p backend
-            j2 -e AWS_S3_BACKEND -e AWS_REGION templates/backend.bootstrap.j2 -o backend/main.tf
-            terraform -chdir=backend workspace new bootstrap || true
-            terraform -chdir=backend init -no-color
-            terraform -chdir=backend apply -auto-approve -no-color
-            echo "✅ Terraform backend created successfully."
+#          ## Create remote stats for environment if not exist
+#          if aws s3 ls "s3:///${{ secrets.AWS_S3_BACKEND }}/env:/${{ env.ENVIRONMENT }}/${{ vars.AWS_BACKEND_KEY_NETWORKING }}" ; then
+#            echo "♻ S3 terraform state for ${{ env.ENVIRONMENT }} already exists."
+#          else
+#            j2 -e AWS_S3_BACKEND -e AWS_REGION -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
+#            terraform init -backend-config=backend.conf -get=false
+#            terraform workspace new "${{ env.ENVIRONMENT }}" && echo "✨ ${{ env.ENVIRONMENT }} workspace "
+#            rm -fr .terraform* 2>&1 >/dev/null
+#          fi
 
-            aws s3 cp backend/terraform.tfstate.d/bootstrap/terraform.tfstate s3://${{ secrets.AWS_S3_BACKEND }}/bootstrap/ 
-            echo "✨ Terraform backed up successfully."
-          else
-            echo "♻️ S3 bucket already exists."
-          fi
-
-          ## Create remote stats for environment if not exist
-          if aws s3 ls "s3:///${{ secrets.AWS_S3_BACKEND }}/env:/${{ env.ENVIRONMENT }}/${{ vars.AWS_BACKEND_KEY_NETWORKING }}" ; then
-            echo "♻ S3 terraform state for ${{ env.ENVIRONMENT }} already exists."
-          else
-            j2 -e AWS_S3_BACKEND -e AWS_REGION -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
-            terraform init -backend-config=backend.conf -get=false
-            terraform workspace new "${{ env.ENVIRONMENT }}" && echo "✨ ${{ env.ENVIRONMENT }} workspace "
-            rm -fr .terraform* 2>&1 >/dev/null
-          fi
-
-      - name: Terraform init
-        run:
-          j2 -e AWS_S3_BACKEND -e AWS_REGION -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
-          terraform init -backend-config=backend.conf
-          terraform workspace select "${{ env.ENVIRONMENT }}" && echo "🚀 terraform workspace list"
+#      - name: Terraform init
+#        run:
+#          j2 -e AWS_S3_BACKEND -e AWS_REGION -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
+#          terraform init -backend-config=backend.conf
+#          terraform workspace select "${{ env.ENVIRONMENT }}" && echo "🚀 terraform workspace list"
