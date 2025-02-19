@@ -20,11 +20,10 @@ on:
           - staging
           - prod
           - backend
-
 jobs:
   Destroy:
     runs-on: ubuntu-latest
-    environment: ${{ input.environment }}
+    environment: ${{ inputs.environment }}
 
   steps:
     - name: Checkout Code
@@ -41,7 +40,7 @@ jobs:
       uses: hashicorp/setup-terraform@v3
 
     - name: Destroy Terraform Backend
-      if: ${{ inputs.environment == 'backend' && input.uphold }}
+      if: ${{ inputs.environment == 'backend' && inputs.uphold }}
       run: |
         sudo apt update 2>&1> /dev/null
         sudo apt install -y j2cli 2>&1> /dev/null
