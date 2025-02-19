@@ -52,3 +52,19 @@ jobs:
           terraform -chdir=backend init
           terraform -chdir=backend destroy -auto-approve
           echo "🚨🚨🚨Remove Terraform backend bucket bucket and dbnamodb table🚨🚨🚨"
+
+      - name: Destroy Infra ${{ inputs.environment }}
+        if: ${{ inputs.environment != 'backend' && inputs.uphold }}
+        run: |
+          sudo apt update 2>&1> /dev/null
+          sudo apt install -y j2cli 2>&1> /dev/null
+
+          export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
+          export AWS_BACKEND_KEY_NETWORKING=${{ vars.AWS_BACKEND_KEY_NETWORKING }}
+          j2 -e AWS_S3_BACKEND -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf
+          unset AWS_BACKEND_KEY_NETWORKING AWS_S3_BACKEND
+
+          terraform init -backend-config=backend.conf
+          terraform workspace select ${{ env.ENVIRONMENT }}
+          terraform destroy -var="environment=$ENVIRONMENT" -auto-approve
+          echo "🚨🚨🚨Destroy ${{ inputs.environment }} infraestructure 🚨🚨🚨"
