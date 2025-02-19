@@ -33,7 +33,9 @@ jobs:
 
     steps:
       - name: Setup Environment variable
-        run: echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+        run: |
+          echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+          echo "👷$ENVIRONMENT"
 
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -83,7 +85,7 @@ jobs:
             j2 -e AWS_S3_BACKEND templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
             unset AWS_S3_BACKEND
             terraform init -backend-config=backend.conf -get=false
-            terraform workspace new ${{ env.ENVIRONMENT }} && echo "✨ ${{ env.ENVIRONMENT }} workspace "
+            terraform workspace new ${{ env.ENVIRONMENT }} && echo "👷 ${{ env.ENVIRONMENT }} workspace "
             rm -fr .terraform* 2>&1 >/dev/null
           fi
 
@@ -96,14 +98,19 @@ jobs:
           unset AWS_BACKEND_KEY_NETWORKING AWS_S3_BACKEND
           terraform init -backend-config=backend.conf
           terraform workspace select ${{ env.ENVIRONMENT }}
-          echo "terraform workspace list" && terraform workspace list
+          echo "👷terraform workspace list" && terraform workspace list
 
       - name: Lint
-        run: terraform fmt -recursive -check
+        run: |
+          terraform fmt -recursive -check
+          echo "✅"
 
       - name: Validate
-        run: terraform validate
-
+        run: |
+          terraform validate
+          echo "✅"
 
       - name: Plan
-        run: terraform plan -var="environment=$ENVIRONMENT"
+        run: | 
+          terraform plan -var="environment=$ENVIRONMENT"
+          echo "✅" 

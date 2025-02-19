@@ -1,3 +1,4 @@
+
 provider "aws" {
   region = "{{ AWS_REGION }}"
 }
@@ -6,10 +7,6 @@ resource "aws_s3_bucket" "tfstate" {
   bucket        = "{{ AWS_S3_BACKEND }}"
   force_destroy = true
 
-  versioning {
-    enabled = true
-  }
-
   lifecycle {
     prevent_destroy = false
   }
@@ -17,6 +14,14 @@ resource "aws_s3_bucket" "tfstate" {
   tags = {
     Project   = "iasc-infra"
     Terraform = "true"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "tfstate_versioning" {
+  bucket = aws_s3_bucket.tfstate.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
