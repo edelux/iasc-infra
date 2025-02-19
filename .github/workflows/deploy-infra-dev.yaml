@@ -87,12 +87,6 @@ jobs:
             rm -fr .terraform* 2>&1 >/dev/null
           fi
 
-      - name: Lint
-        run: terraform fmt -recursive -check
-
-      - name: Validate
-        run: terraform validate
-
       - name: Init
         run: |
           export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
@@ -103,6 +97,13 @@ jobs:
           terraform init -backend-config=backend.conf
           terraform workspace select ${{ env.ENVIRONMENT }}
           echo "terraform workspace list" && terraform workspace list
+
+      - name: Lint
+        run: terraform fmt -recursive -check
+
+      - name: Validate
+        run: terraform validate
+
 
       - name: Plan
         run: terraform plan -var="environment=$ENVIRONMENT"
