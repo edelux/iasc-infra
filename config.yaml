@@ -7,7 +7,7 @@ environments:
     regions: "us-east-1"
     cidr: "172.0.0.0/16"
     cidr_subnet_bits: 7
-    high_availability: false
+    high_availability: true
 
   qa:
     zones_numbers: 2
