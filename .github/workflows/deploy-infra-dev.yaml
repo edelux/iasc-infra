@@ -11,6 +11,7 @@ on:
     paths:
       - '*.tf'
       - '*.vars'
+      - 'config.yaml'
       - 'templates/*'
       - 'modules/*/*.tf'
 
@@ -22,6 +23,7 @@ on:
     paths:
       - '*.tf'
       - '*.vars'
+      - 'config.yaml'
       - 'templates/*'
       - 'modules/*/*.tf'
 #      types: [opened, reopened]
