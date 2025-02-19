@@ -42,3 +42,6 @@ terraform.rc
 
 ## exclude backend/
 backend/**
+
+## Exclude backend.conf
+backend.conf

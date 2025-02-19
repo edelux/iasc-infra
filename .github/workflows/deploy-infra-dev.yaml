@@ -54,7 +54,7 @@ jobs:
           test -e /usr/bin/j2       ||  sudo apt install -y j2cli 2>&1> /dev/null    && echo "✨ j2-> Istalled sussesfuly"        || echo "💥 j2-> Installed faulere"
           test -e /usr/bin/envsubst ||  sudo apt install -y gettext 2>&1> /dev/null  && echo "✨ envsubst-> Istalled sussesfuly"  || echo "💥 envsubst-> Installed faulere"
 
-      - name: Create Terraform Backend
+      - name: Create Backend
         run: |
           export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
 
@@ -64,6 +64,7 @@ jobs:
 
             mkdir -p backend
             j2 -e AWS_S3_BACKEND templates/backend.bootstrap.j2 -o backend/main.tf
+            unset AWS_S3_BACKEND
             terraform -chdir=backend workspace new bootstrap || true
             terraform -chdir=backend init
             terraform -chdir=backend apply -auto-approve
@@ -80,17 +81,28 @@ jobs:
             echo "♻ S3 terraform state for ${{ env.ENVIRONMENT }} already exists."
           else
             j2 -e AWS_S3_BACKEND templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
+            unset AWS_S3_BACKEND
             terraform init -backend-config=backend.conf -get=false
             terraform workspace new ${{ env.ENVIRONMENT }} && echo "✨ ${{ env.ENVIRONMENT }} workspace "
             rm -fr .terraform* 2>&1 >/dev/null
           fi
 
-      - name: Terraform init
+      - name: Lint
+        run: terraform fmt -recursive -check
+
+      - name: Validate
+        run: terraform validate
+
+      - name: Init
         run: |
           export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
           export AWS_BACKEND_KEY_NETWORKING=${{ vars.AWS_BACKEND_KEY_NETWORKING }}
 
           j2 -e AWS_S3_BACKEND -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
+          unset AWS_BACKEND_KEY_NETWORKING AWS_S3_BACKEND
           terraform init -backend-config=backend.conf
           terraform workspace select ${{ env.ENVIRONMENT }}
           echo "terraform workspace list" && terraform workspace list
+
+      - name: Plan
+        run: terraform plan -var="environment=$ENVIRONMENT"
