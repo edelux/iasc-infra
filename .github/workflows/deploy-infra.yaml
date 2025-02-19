@@ -92,4 +92,5 @@ jobs:
 
           j2 -e AWS_S3_BACKEND -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf && echo "✨ backend.conf"
           terraform init -backend-config=backend.conf
-          terraform workspace select ${{ env.ENVIRONMENT }} && echo "🚀 terraform workspace list"
+          terraform workspace select ${{ env.ENVIRONMENT }} && terraform workspace list
+          echo "🚀 Well done"
