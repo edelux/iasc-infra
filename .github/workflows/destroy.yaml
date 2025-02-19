@@ -1,0 +1,55 @@
+---
+name: Destroy Infraestructure
+run-name: Destroy Workflow
+
+on:
+  workflow_dispatch:
+    input:
+      uphold:
+        description: "Do you confirm? yes/no"
+        reqired: true
+        type: boolean
+        default: falss
+      environment:
+        destription: 'Environment for Destroy'
+        required: true
+        type: choice
+        options:
+          - dev
+          - qa
+          - staging
+          - prod
+          - backend
+
+jobs:
+  Destroy:
+  runs-on: ubuntu-latest
+  environment: ${{ input.environment }}
+
+  if: ${{ inputs.environment == 'backend' }} && ${{ input.uphold }}
+  steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ vars.AWS_REGION }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    - name: Destroy
+      run: |
+        sudo apt update 2>&1> /dev/null
+        sudo apt install -y j2cli 2>&1> /dev/null
+        mkdir -p backend
+        export AWS_S3_BACKEND=${{ secrets.AWS_S3_BACKEND }}
+        j2 -e AWS_S3_BACKEND templates/backend.bootstrap.j2 -o backend/main.tf
+        unset AWS_S3_BACKEND
+        aws s3 cp s3://${{ secrets.AWS_S3_BACKEND }}/bootstrap/terraform.tfstate backend/
+        terraform -chdir=backend init
+        terraform -chdir=backend destroy -auto-approve
+        echo "🚨🚨🚨Remove Terraform backend bucket bucket and dbnamodb table🚨🚨🚨"
