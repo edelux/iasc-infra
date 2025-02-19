@@ -114,3 +114,10 @@ jobs:
         run: | 
           terraform plan -var="environment=$ENVIRONMENT"
           echo "✅" 
+
+      - name: Apply
+        run: |
+          terraform destroy -var="environment=$ENVIRONMENT" -auto-approve
+          echo "✨✨"
+          echo "✨Deploy ${{ env.ENVIRONMENT }}"
+          echo "🍻"
