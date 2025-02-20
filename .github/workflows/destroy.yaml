@@ -1,5 +1,5 @@
 ---
-name: Destroy Infraestructure
+name: Destroy
 run-name: Destroy Workflow
 
 on:
