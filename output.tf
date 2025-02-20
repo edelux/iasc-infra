@@ -20,7 +20,6 @@ output "availability_zones" {
   value       = module.vpc.availability_zones
 }
 
-# Outputs de Subnets Privadas
 output "private_subnet_ids" {
   description = "Private Subnets list"
   value       = module.vpc.private_subnet_ids
@@ -36,7 +35,6 @@ output "private_subnet_cidrs" {
   value       = module.vpc.private_subnet_cidrs
 }
 
-# Outputs de Subnets Públicas
 output "public_subnet_ids" {
   description = "Public Subnets list"
   value       = module.vpc.public_subnet_ids
@@ -52,7 +50,6 @@ output "public_subnet_cidrs" {
   value       = module.vpc.public_subnet_cidrs
 }
 
-# Outputs de Subnets de Base de Datos
 output "database_subnet_ids" {
   description = "Database Subnets list"
   value       = module.vpc.database_subnet_ids
@@ -66,4 +63,35 @@ output "database_subnet_arns" {
 output "database_subnet_cidrs" {
   description = "Database Subnets CIDR list"
   value       = module.vpc.database_subnet_cidrs
+}
+
+## Security Groups
+output "postgresql_sg_id" {
+  description = "RDS Postgres Security Group ID"
+  value       = module.security.postgresql_sg_id
+}
+
+output "postgresql_sg_arn" {
+  description = "RDS Postgres Security Group ARN"
+  value       = module.security.postgresql_sg_arn
+}
+
+output "postgresql_sg_name" {
+  description = "RDS Postgres Security Group Name"
+  value       = module.security.postgresql_sg_name
+}
+
+output "ssh_sg_id" {
+  description = "SSH Security Group ID"
+  value       = module.security.ssh_sg_id
+}
+
+output "ssh_sg_arn" {
+  description = "SSH Security Group ARN"
+  value       = module.security.ssh_sg_arn
+}
+
+output "ssh_sg_name" {
+  description = "SSH Security Group Name"
+  value       = module.security.ssh_sg_name
 }

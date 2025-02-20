@@ -17,3 +17,9 @@ module "vpc" {
   cidr_subnet_bits  = local.cidr_subnet_bits
   high_availability = local.high_availability
 }
+
+module "security" {
+  source   = "./modules/security"
+  vpc_cidr = local.cidr
+  vpc_id   = module.vpc.vpc_id
+}
