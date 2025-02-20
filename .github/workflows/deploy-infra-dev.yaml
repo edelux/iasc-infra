@@ -1,5 +1,5 @@
 ---
-name: Deploy Infrastructure
+name: Deploy
 run-name: Deploy Workflow
 
 on:
