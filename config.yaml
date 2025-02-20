@@ -3,7 +3,7 @@ domain: edeluquez.com
 
 environments:
   dev:
-    zones_numbers: 2
+    zones_numbers: 4
     regions: "us-east-1"
     cidr: "172.0.0.0/16"
     cidr_subnet_bits: 7
