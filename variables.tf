@@ -76,3 +76,16 @@ variable "high_availability" {
   type        = bool
   default     = false
 }
+
+## EC2
+variable "ssh_keys" {
+  type        = list(string)
+  default     = [null]
+  description = "Public SSH Keys"
+}
+
+variable "bastion-power-on" {
+  description = "Power on Bastion Host"
+  type        = bool
+  default     = false
+}

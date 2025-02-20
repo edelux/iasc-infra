@@ -8,6 +8,10 @@ locals {
   zones_numbers     = local.env_data.zones_numbers
   cidr_subnet_bits  = local.env_data.cidr_subnet_bits
   high_availability = local.env_data.high_availability
+
+  ## ec2
+  ssh_keys = local.env_data.ssh_keys
+  power-on = local.env_data.bastion-power-on
 }
 
 module "vpc" {
@@ -22,4 +26,13 @@ module "security" {
   source   = "./modules/security"
   vpc_cidr = local.cidr
   vpc_id   = module.vpc.vpc_id
+}
+
+module "ec2" {
+  source            = "./modules/ec2"
+  ssh_keys          = local.ssh_keys
+  power-on          = local.power-on
+  public_subnet_ids = module.vpc.public_subnet_ids
+  postgresql_sg_id  = module.security.postgresql_sg_id
+  ssh_sg_id         = module.security.ssh_sg_id
 }
