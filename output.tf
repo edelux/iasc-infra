@@ -95,3 +95,24 @@ output "ssh_sg_name" {
   description = "SSH Security Group Name"
   value       = module.security.ssh_sg_name
 }
+
+## ec2
+output "bastion_public_dns" {
+  description = "Public DNS of the Bastion Host"
+  value       = module.ec2.bastion_public_dns
+}
+
+output "bastion_private_dns" {
+  description = "Private DNS of the Bastion Host"
+  value       = module.ec2.bastion_private_dns
+}
+
+output "bastion_public_ip" {
+  description = "Public IP of the Bastion Host"
+  value       = module.ec2.bastion_public_ip
+}
+
+output "bastion_private_ip" {
+  description = "Private IP of the Bastion Host"
+  value       = module.ec2.bastion_private_ip
+}
