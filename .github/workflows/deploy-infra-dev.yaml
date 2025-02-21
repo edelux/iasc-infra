@@ -34,6 +34,9 @@ jobs:
     environment: dev
 
     steps:
+      env:
+        TF_VAR_allowed_ips: "${{ secrets.MYIPS }}"
+
       - name: Setup Environment variable
         run: |
           echo "ENVIRONMENT=dev" >> $GITHUB_ENV
@@ -105,6 +108,8 @@ jobs:
           terraform init -backend-config=backend.conf
           terraform workspace select ${{ env.ENVIRONMENT }}
           echo "👷terraform workspace list" && terraform workspace list
+
+      - name: Set IP
 
       - name: Lint
         run: |

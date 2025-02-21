@@ -89,3 +89,33 @@ variable "bastion-power-on" {
   type        = bool
   default     = false
 }
+
+## EKS
+variable "allowed_ips" {
+  type    = string
+  default = ""
+}
+
+variable "cluster_version" {
+  description = "Cluster version"
+  type        = string
+  default     = "1.32"
+}
+
+variable "cluster_max_nodes" {
+  description = "Maximun nodes at cluster"
+  type        = number
+  default     = 2
+}
+
+variable "cluster_min_nodes" {
+  description = "Mininum nodes at cluster"
+  type        = number
+  default     = 2
+}
+
+variable "cluster_desired_nodes" {
+  description = "Desired nodes at cluster"
+  type        = number
+  default     = 2
+}

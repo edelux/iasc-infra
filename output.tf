@@ -116,3 +116,70 @@ output "bastion_private_ip" {
   description = "Private IP of the Bastion Host"
   value       = module.ec2.bastion_private_ip
 }
+
+## route53 zones
+output "route53_zone_id" {
+  description = "route53 zone ID"
+  value       = module.zones.zone_id
+}
+
+output "route53_zone_name" {
+  description = "route53 zone Name"
+  value       = module.zones.zone_name
+}
+
+output "route53_zone_arn" {
+  description = "route53 zone arn"
+  value       = module.zones.zone_arn
+}
+
+## EKS
+output "oidc_provider" {
+  description = "OpenID Connect provider"
+  value       = module.eks.oidc_provider
+}
+
+output "oidc_provider_arn" {
+  description = "OpenID Connect provider ARN"
+  value       = module.eks.oidc_provider_arn
+}
+
+output "eks_cluster_id" {
+  description = "The ID of the EKS cluster"
+  value       = module.eks.cluster_id
+}
+
+output "eks_cluster_arn" {
+  description = "The ARN of the EKS cluster"
+  value       = module.eks.cluster_arn
+}
+
+output "eks_cluster_name" {
+  description = "Nmame of the EKS cluster"
+  value       = module.eks.cluster_name
+}
+
+output "eks_cluster_addons" {
+  description = " List of the addons enabled on cluster"
+  value       = module.eks.cluster_addons
+}
+
+output "eks_cluster_endpoint" {
+  description = "The API server endpoint of the Kubernetes cluster"
+  value       = module.eks.cluster_endpoint
+}
+
+output "eks_cluster_version" {
+  description = "The Kubernetes version of the cluster"
+  value       = module.eks.cluster_version
+}
+
+output "eks_cluster_oidc_issuer_url" {
+  description = "The OIDC provider URL of the cluster"
+  value       = module.eks.cluster_oidc_issuer_url
+}
+
+output "eks_cluster_service_cidr" {
+  description = "Cluster Service CIDR"
+  value       = module.eks.cluster_service_cidr
+}
