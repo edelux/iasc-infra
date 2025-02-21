@@ -33,10 +33,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
 
-    steps:
-      env:
-        TF_VAR_allowed_ips: "${{ secrets.MYIPS }}"
+    env:
+      TF_VAR_allowed_ips: "${{ secrets.MYIPS }}"
 
+    steps:
       - name: Setup Environment variable
         run: |
           echo "ENVIRONMENT=dev" >> $GITHUB_ENV
