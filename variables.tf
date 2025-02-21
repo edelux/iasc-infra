@@ -92,8 +92,8 @@ variable "bastion-power-on" {
 
 ## EKS
 variable "allowed_ips" {
-  type    = list(string)
-  default = []
+  type    = string
+  default = ""
 }
 
 variable "cluster_version" {
