@@ -11,7 +11,7 @@ module "eks" {
 
   enable_irsa                          = true
   cluster_endpoint_public_access       = true
-  cluster_endpoint_public_access_cidrs = split(",", var.allowed_ips)
+  cluster_endpoint_public_access_cidrs = length(trimspace(var.allowed_ips)) > 0 ? split(",", trimspace(var.allowed_ips)) : []
 
   eks_managed_node_groups = {
     default = {
@@ -19,7 +19,7 @@ module "eks" {
       min_size     = var.cluster_min_nodes
       max_size     = var.cluster_max_nodes
 
-      instance_types = ["t3a.medium", "t2.medium", "t3.medium"]
+      instance_types = ["t3a.medium", "t3.medium", "t2.medium"]
       capacity_type  = "ON_DEMAND"
       subnet_ids     = var.private_subnet_ids
     }
