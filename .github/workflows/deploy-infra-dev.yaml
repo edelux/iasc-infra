@@ -36,7 +36,6 @@ jobs:
     steps:
       - name: Setup Environment variable
         run: |
-          #export MYIPS=${{ secrets.MYIPS }} || true; [[ -n "$MYIPS" ]] && echo "TF_VAR_allowed_ips=$MYIPS" >> $GITHUB_ENV 
           echo "ENVIRONMENT=dev" >> $GITHUB_ENV
           echo "👷$ENVIRONMENT"
 
@@ -107,8 +106,6 @@ jobs:
           terraform workspace select ${{ env.ENVIRONMENT }}
           echo "👷terraform workspace list" && terraform workspace list
 
-      - name: Set IP
-
       - name: Lint
         run: |
           terraform fmt -recursive -check
@@ -121,6 +118,7 @@ jobs:
 
       - name: Plan
         run: | 
+          export MYIPS=${{ secrets.MYIPS || '' }}; echo "TF_VAR_allowed_ips=$MYIPS" >> $GITHUB_ENV
           terraform plan -var="environment=$ENVIRONMENT"
           echo "✅" 
 
