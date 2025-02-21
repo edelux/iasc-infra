@@ -11,7 +11,7 @@ module "eks" {
 
   enable_irsa                          = true
   cluster_endpoint_public_access       = true
-  cluster_endpoint_public_access_cidrs = var.myips
+  cluster_endpoint_public_access_cidrs = split(",", var.allowed_ips)
 
   eks_managed_node_groups = {
     default = {

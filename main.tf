@@ -48,7 +48,7 @@ module "zones" {
 
 module "eks" {
   source                = "./modules/eks"
-  myips                 = var.myips
+  allowed_ips           = var.allowed_ips
   cluster_version       = var.cluster_version
   cluster_desired_nodes = var.cluster_desired_nodes
   cluster_max_nodes     = var.cluster_max_nodes

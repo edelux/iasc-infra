@@ -1,6 +1,6 @@
 
-variable "myips" {}
 variable "vpc_id" {}
+variable "allowed_ips" {}
 variable "cluster_version" {}
 variable "cluster_min_nodes" {}
 variable "cluster_max_nodes" {}

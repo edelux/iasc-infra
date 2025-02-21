@@ -91,9 +91,9 @@ variable "bastion-power-on" {
 }
 
 ## EKS
-variable "myips" {
+variable "allowed_ips" {
   type    = list(string)
-  default = ["127.0.0.1"]
+  default = []
 }
 
 variable "cluster_version" {
