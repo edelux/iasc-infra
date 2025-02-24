@@ -35,6 +35,7 @@ module "eks" {
       subnet_ids     = var.private_subnet_ids
     }
   }
+
   tags = {
     Terraform   = "true"
     Environment = terraform.workspace
