@@ -29,6 +29,15 @@ module "vpc" {
   database_subnets       = local.database_subnets
   database_subnet_names  = local.database_subnet_names
 
+
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
+  }
+
   tags = {
     Terraform   = "true"
     Environment = terraform.workspace
