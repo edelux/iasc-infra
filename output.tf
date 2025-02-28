@@ -118,68 +118,98 @@ output "bastion_private_ip" {
 }
 
 ## route53 zones
-output "route53_zone_id" {
-  description = "route53 zone ID"
-  value       = module.zones.zone_id
+output "parent_zone_id" {
+  description = "route53 zone ID for domain"
+  value       = module.zones.parent_zone_id
 }
 
-output "route53_zone_name" {
-  description = "route53 zone Name"
-  value       = module.zones.zone_name
+output "parent_zone_arn" {
+  description = "route53 zone ARN for domain"
+  value       = module.zones.parent_zone_arn
 }
 
-output "route53_zone_arn" {
-  description = "route53 zone arn"
-  value       = module.zones.zone_arn
+output "parent_zone_name" {
+  description = "route53 zone Name for domain"
+  value       = module.zones.parent_zone_name
+}
+
+output "domain_zone_id" {
+  description = "route53 zone ARN for subdomain"
+  value       = module.zones.domain_zone_id
+}
+
+output "domain_zone_name" {
+  description = "route53 zone Name for domain"
+  value       = module.zones.domain_zone_name
+}
+
+output "domain_zone_arn" {
+  description = "route53 zone ARN for domain"
+  value       = module.zones.domain_zone_arn
+}
+
+output "delegation_set_id" {
+  description = "Delegation Set ID"
+  value       = module.zones.delegation_set_id
+}
+
+output "delegation_set_info" {
+  description = "Delegation Set complete information"
+  value       = module.zones.delegation_set_info
+}
+
+output "delegation_set_name_servers" {
+  description = "Delegation Set complete information"
+  value       = module.zones.delegation_set_name_servers
 }
 
 ## EKS
-output "oidc_provider" {
-  description = "OpenID Connect provider"
-  value       = module.eks.oidc_provider
-}
-
-output "oidc_provider_arn" {
-  description = "OpenID Connect provider ARN"
-  value       = module.eks.oidc_provider_arn
-}
-
-output "eks_cluster_id" {
-  description = "The ID of the EKS cluster"
-  value       = module.eks.cluster_id
-}
-
-output "eks_cluster_arn" {
-  description = "The ARN of the EKS cluster"
-  value       = module.eks.cluster_arn
-}
-
-output "eks_cluster_name" {
-  description = "Nmame of the EKS cluster"
-  value       = module.eks.cluster_name
-}
-
-output "eks_cluster_addons" {
-  description = " List of the addons enabled on cluster"
-  value       = module.eks.cluster_addons
-}
-
-output "eks_cluster_endpoint" {
-  description = "The API server endpoint of the Kubernetes cluster"
-  value       = module.eks.cluster_endpoint
-}
-
-output "eks_cluster_version" {
-  description = "The Kubernetes version of the cluster"
-  value       = module.eks.cluster_version
-}
-
-output "eks_cluster_oidc_issuer_url" {
-  description = "The OIDC provider URL of the cluster"
-  value       = module.eks.cluster_oidc_issuer_url
-}
-
-output "eks_cluster_service_cidr" {
-  description = "Cluster Service CIDR"
-  value       = module.eks.cluster_service_cidr
-}
+#output "oidc_provider" {
+#  description = "OpenID Connect provider"
+#  value       = module.eks.oidc_provider
+#}
+#
+#output "oidc_provider_arn" {
+#  description = "OpenID Connect provider ARN"
+#  value       = module.eks.oidc_provider_arn
+#}
+#
+#output "eks_cluster_id" {
+#  description = "The ID of the EKS cluster"
+#  value       = module.eks.cluster_id
+#}
+#
+#output "eks_cluster_arn" {
+#  description = "The ARN of the EKS cluster"
+#  value       = module.eks.cluster_arn
+#}
+#
+#output "eks_cluster_name" {
+#  description = "Nmame of the EKS cluster"
+#  value       = module.eks.cluster_name
+#}
+#
+#output "eks_cluster_addons" {
+#  description = " List of the addons enabled on cluster"
+#  value       = module.eks.cluster_addons
+#}
+#
+#output "eks_cluster_endpoint" {
+#  description = "The API server endpoint of the Kubernetes cluster"
+#  value       = module.eks.cluster_endpoint
+#}
+#
+#output "eks_cluster_version" {
+#  description = "The Kubernetes version of the cluster"
+#  value       = module.eks.cluster_version
+#}
+#
+#output "eks_cluster_oidc_issuer_url" {
+#  description = "The OIDC provider URL of the cluster"
+#  value       = module.eks.cluster_oidc_issuer_url
+#}
+#
+#output "eks_cluster_service_cidr" {
+#  description = "Cluster Service CIDR"
+#  value       = module.eks.cluster_service_cidr
+#}

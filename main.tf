@@ -1,6 +1,6 @@
 
 locals {
-  yaml_data = yamldecode(file("config.yaml"))
+  yaml_data = yamldecode(file("networking.yaml"))
   env_data  = lookup(local.yaml_data.environments, var.environment, {})
 
   ## VPC
@@ -53,6 +53,8 @@ module "eks" {
   cluster_desired_nodes = var.cluster_desired_nodes
   cluster_max_nodes     = var.cluster_max_nodes
   cluster_min_nodes     = var.cluster_min_nodes
+  domain                = values(module.zones.domain_zone_name)[0]
+  zone_id               = values(module.zones.domain_zone_id)[0]
   vpc_id                = module.vpc.vpc_id
   private_subnet_ids    = module.vpc.private_subnet_ids
 }
