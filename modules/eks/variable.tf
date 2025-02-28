@@ -1,5 +1,7 @@
 
 variable "vpc_id" {}
+variable "domain" {}
+variable "zone_id" {}
 variable "allowed_ips" {}
 variable "cluster_version" {}
 variable "cluster_min_nodes" {}

@@ -48,3 +48,19 @@ output "cluster_service_cidr" {
   description = "Cluster Service CIDR"
   value       = module.eks.cluster_service_cidr
 }
+
+output "aws_lb_controller_role_arn" {
+  value = aws_iam_role.aws_lb_controller_role.arn
+}
+
+#data "aws_lb" "argocd" {
+#  name = module.argocd.lb_name
+#}
+#
+#output "lb_dns_name" {
+#  value = data.aws_lb.argocd.dns_name
+#}
+#
+#output "lb_zone_id" {
+#  value = data.aws_lb.argocd.zone_id
+#}
