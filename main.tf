@@ -11,7 +11,7 @@ locals {
 
   ## ec2
   ssh_keys = local.env_data.ssh_keys
-  power-on = local.env_data.bastion-power-on
+  wakeup   = local.env_data.bastion-wakeup
 
   ## route53 domain
   domain = local.yaml_data.domain
@@ -34,7 +34,7 @@ module "security" {
 module "ec2" {
   source            = "./modules/ec2"
   ssh_keys          = local.ssh_keys
-  power-on          = local.power-on
+  wakeup            = local.wakeup
   public_subnet_ids = module.vpc.public_subnet_ids
   postgresql_sg_id  = module.security.postgresql_sg_id
   ssh_sg_id         = module.security.ssh_sg_id
@@ -44,17 +44,4 @@ module "zones" {
   source      = "./modules/zones"
   domain      = local.domain
   environment = var.environment
-}
-
-module "eks" {
-  source                = "./modules/eks"
-  allowed_ips           = var.allowed_ips
-  cluster_version       = var.cluster_version
-  cluster_desired_nodes = var.cluster_desired_nodes
-  cluster_max_nodes     = var.cluster_max_nodes
-  cluster_min_nodes     = var.cluster_min_nodes
-  domain                = values(module.zones.domain_zone_name)[0]
-  zone_id               = values(module.zones.domain_zone_id)[0]
-  vpc_id                = module.vpc.vpc_id
-  private_subnet_ids    = module.vpc.private_subnet_ids
 }
