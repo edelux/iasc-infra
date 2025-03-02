@@ -1,5 +1,10 @@
 
 ## VPC
+output "region" {
+  description = "Region"
+  value = var.region
+}
+
 output "vpc_id" {
   description = "VPC ID Created"
   value       = module.vpc.vpc_id
