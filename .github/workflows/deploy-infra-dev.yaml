@@ -13,8 +13,8 @@ on:
       - '*.tf'
       - 'templates/*.*'
       - 'modules/*/*.tf'
-      - 'networking.yml'
-      - 'networking.yaml'
+      - 'variables.yaml'
+      - 'variables.yaml.j2'
 
 jobs:
   Deploy:
