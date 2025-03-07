@@ -3,6 +3,7 @@ name: Deploy Infraestructure
 run-name: Deploy Workflow
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'fix/*'
@@ -14,23 +15,6 @@ on:
       - 'modules/*/*.tf'
       - 'networking.yml'
       - 'networking.yaml'
-
-  pull_request:
-    types:
-      - closed
-      - opened
-      - reopened
-      - synchronize
-    branches:
-      - 'main'
-    paths:
-      - '*.tf'
-      - 'templates/*.*'
-      - 'modules/*/*.tf'
-      - 'networking.yml'
-      - 'networking.yaml'
-
-  workflow_dispatch:
 
 jobs:
   Deploy:
