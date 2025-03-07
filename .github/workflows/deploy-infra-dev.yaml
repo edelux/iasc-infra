@@ -27,6 +27,7 @@ on:
       - 'templates/*'
       - 'modules/*/*.tf'
     types: [opened, reopened]
+  workflow_dispatch:
 
 jobs:
   Deploy:
