@@ -10,23 +10,26 @@ on:
       - 'feature/*'
     paths:
       - '*.tf'
-      - '*.vars'
-      - 'config.yaml'
-      - 'templates/*'
+      - 'templates/*.*'
       - 'modules/*/*.tf'
+      - 'networking.yml'
+      - 'networking.yaml'
 
   pull_request:
+    types:
+      - closed
+      - opened
+      - reopened
+      - synchronize
     branches:
-      - 'feature/*'
-      - 'feat/*'
-      - 'fix/*'
+      - 'main'
     paths:
       - '*.tf'
-      - '*.vars'
-      - 'config.yaml'
-      - 'templates/*'
+      - 'templates/*.*'
       - 'modules/*/*.tf'
-    types: [opened, reopened]
+      - 'networking.yml'
+      - 'networking.yaml'
+
   workflow_dispatch:
 
 jobs:
