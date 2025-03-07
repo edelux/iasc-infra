@@ -2,7 +2,7 @@
 ## VPC
 output "region" {
   description = "Region"
-  value = var.region
+  value       = var.region
 }
 
 output "vpc_id" {

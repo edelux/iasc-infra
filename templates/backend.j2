@@ -1,3 +1,5 @@
+## j2 -e AWS_S3_BACKEND -e AWS_BACKEND_KEY_NETWORKING templates/backend.j2 -o backend.conf
+
 region         = "{{ AWS_REGION }}"
 bucket         = "{{ AWS_S3_BACKEND }}"
 key            = "{{ AWS_BACKEND_KEY_NETWORKING }}"
