@@ -45,3 +45,6 @@ backend/**
 
 ## Exclude backend.conf
 backend.conf
+
+## Exclude backup file ~
+**~
