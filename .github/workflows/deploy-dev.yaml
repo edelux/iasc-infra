@@ -1,0 +1,31 @@
+---
+name: Deploy Infraestructure
+run-name: Deploy Workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'fix/*'
+      - 'feat/*'
+      - 'feature/*'
+    paths:
+      - '*.tf'
+      - 'templates/*.*'
+      - 'modules/*/*.tf'
+      - 'variables.yaml'
+      - 'variables.yaml.j2'
+
+jobs:
+  Deploy:
+    environment: "dev"
+    uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
+      with:
+        ENVIRONMENT: "dev"
+        AWS_REGION: "{{ vars.AWS_REGION }}"
+      secrets:
+        DOMAINNAME: "${{ secrets.DOMAINNAME }}"
+        AWS_ROLE_ARN: "${{ secrets.AWS_ROLE_ARN }}"
+        AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID }}"
+        AWS_S3_BACKEND: "${{ secrets.AWS_S3_BACKEND }}"
+        AWS_S3_BACKEND_KEY: "${{ secrets.AWS_S3_BACKEND_KEY }}"
