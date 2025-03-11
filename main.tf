@@ -1,6 +1,6 @@
 
 locals {
-  yaml_data = yamldecode(file("networking.yaml"))
+  yaml_data = yamldecode(file("config.yaml"))
   env_data  = lookup(local.yaml_data.environments, var.environment, {})
 
   ## VPC
