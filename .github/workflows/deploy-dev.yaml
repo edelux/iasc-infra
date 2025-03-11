@@ -28,3 +28,7 @@ jobs:
       AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID }}"
       AWS_S3_BACKEND: "${{ secrets.AWS_S3_BACKEND }}"
       AWS_S3_BACKEND_KEY: "${{ secrets.AWS_S3_BACKEND_KEY }}"
+
+    permissions:
+      id-token: write
+      contents: read
