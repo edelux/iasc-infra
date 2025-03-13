@@ -18,8 +18,8 @@ on:
 
 jobs:
   Deploy:
-    uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
     environment: dev
+    uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
     with:
       ENVIRONMENT: "dev"
       AWS_REGION: "${{ vars.AWS_REGION }}"
