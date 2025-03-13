@@ -1,5 +1,5 @@
 ---
-name: Deploy Infraestructure
+name: Deploy Infrastructure
 run-name: Deploy Workflow
 
 on:
@@ -17,18 +17,38 @@ on:
       - 'variables.yaml.j2'
 
 jobs:
-  Deploy:
+  setup-environment:
+    runs-on: ubuntu-latest
     environment: dev
+    outputs:
+      ENVIRONMENT: dev
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      DOMAINNAME: ${{ secrets.DOMAINNAME }}
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_S3_BACKEND: ${{ secrets.AWS_S3_BACKEND }}
+      AWS_S3_BACKEND_KEY: ${{ secrets.AWS_S3_BACKEND_KEY }}
+
+    steps:
+      - name: Echo environment variables
+        run: |
+          echo "ENVIRONMENT=dev"
+          echo "AWS_REGION=${{ vars.AWS_REGION }}"
+          echo "DOMAINNAME=${{ secrets.DOMAINNAME }}"
+          echo "${{ secrets.DOMAINNAME }}${{ secrets.AWS_ROLE_ARN }}${{ secrets.AWS_ACCOUNT_ID }}${{ secrets.AWS_S3_BACKEND }}${{ secrets.AWS_S3_BACKEND_KEY }}"
+
+  deploy:
+    needs: setup-environment
     uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
     with:
-      ENVIRONMENT: "dev"
-      AWS_REGION: "${{ vars.AWS_REGION }}"
+      ENVIRONMENT: ${{ needs.setup-environment.outputs.ENVIRONMENT }}
+      AWS_REGION: ${{ needs.setup-environment.outputs.AWS_REGION }}
     secrets:
-      DOMAINNAME: "${{ secrets.DOMAINNAME }}"
-      AWS_ROLE_ARN: "${{ secrets.AWS_ROLE_ARN }}"
-      AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID }}"
-      AWS_S3_BACKEND: "${{ secrets.AWS_S3_BACKEND }}"
-      AWS_S3_BACKEND_KEY: "${{ secrets.AWS_S3_BACKEND_KEY }}"
+      DOMAINNAME: ${{ needs.setup-environment.outputs.DOMAINNAME }}
+      AWS_ROLE_ARN: ${{ needs.setup-environment.outputs.AWS_ROLE_ARN }}
+      AWS_ACCOUNT_ID: ${{ needs.setup-environment.outputs.AWS_ACCOUNT_ID }}
+      AWS_S3_BACKEND: ${{ needs.setup-environment.outputs.AWS_S3_BACKEND }}
+      AWS_S3_BACKEND_KEY: ${{ needs.setup-environment.outputs.AWS_S3_BACKEND_KEY }}
 
     permissions:
       id-token: write
