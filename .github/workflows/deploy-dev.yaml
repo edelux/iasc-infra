@@ -18,8 +18,8 @@ on:
 
 jobs:
   setup-env:
-    environment: dev
     runs-on: ubuntu-latest
+    environment: dev
 
   steps:
     - name: echo
