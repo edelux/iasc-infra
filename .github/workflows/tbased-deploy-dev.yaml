@@ -30,7 +30,7 @@ jobs:
           echo "AWS_REGION=${{ vars.AWS_REGION }}"
           echo "${{ secrets.DOMAINNAME }}${{ secrets.AWS_ROLE_ARN }}${{ secrets.AWS_ACCOUNT_ID }}${{ secrets.AWS_S3_BACKEND }}${{ secrets.AWS_S3_BACKEND_KEY }}"
 
-  deploy:
+  Deploy:
     needs: setup-env
     uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
     with:
