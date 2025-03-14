@@ -21,6 +21,12 @@ jobs:
     environment: dev
     runs-on: ubuntu-latest
 
+  steps:
+    - name: echo
+      run: |
+        echo "AWS_REGION=${{ vars.AWS_REGION }}"
+        echo "${{ secrets.DOMAINNAME }}${{ secrets.AWS_ROLE_ARN }}${{ secrets.AWS_ACCOUNT_ID }}${{ secrets.AWS_S3_BACKEND }}${{ secrets.AWS_S3_BACKEND_KEY }}"
+
   deploy:
     needs: setup-env
     uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
