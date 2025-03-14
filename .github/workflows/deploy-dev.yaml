@@ -13,29 +13,20 @@ on:
       - '*.tf'
       - 'templates/*.*'
       - 'modules/*/*.tf'
-      - 'variables.yaml'
-      - 'variables.yaml.j2'
+      - 'config.yaml'
+      - 'config.yaml.j2'
 
 jobs:
-  setup-environment:
-    runs-on: ubuntu-latest
+  setup-env:
     environment: dev
-    outputs:
-      ENVIRONMENT: dev
-      AWS_REGION: ${{ vars.AWS_REGION }}
-
-    steps:
-      - name: Echo environment variables
-        run: |
-          echo "AWS_REGION=${{ vars.AWS_REGION }}"
-          echo "${{ secrets.DOMAINNAME }}${{ secrets.AWS_ROLE_ARN }}${{ secrets.AWS_ACCOUNT_ID }}${{ secrets.AWS_S3_BACKEND }}${{ secrets.AWS_S3_BACKEND_KEY }}"
+    runs-on: ubuntu-latest
 
   deploy:
-    needs: setup-environment
+    needs: setup-env
     uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
     with:
-      ENVIRONMENT: ${{ needs.setup-environment.outputs.ENVIRONMENT }}
-      AWS_REGION: ${{ needs.setup-environment.outputs.AWS_REGION }}
+      ENVIRONMENT: dev
+      AWS_REGION: ${{ vars.AWS_REGION }}
     secrets:
       DOMAINNAME: ${{ secrets.DOMAINNAME }}
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
