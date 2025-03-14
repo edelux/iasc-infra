@@ -20,6 +20,9 @@ jobs:
   setup-env:
     environment: dev
     runs-on: ubuntu-latest
+    outputs:
+      ENVIRONMENT: dev
+      AWS_REGION: ${{ vars.AWS_REGION }}
 
     steps:
       - name: echo
@@ -31,8 +34,8 @@ jobs:
     needs: setup-env
     uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
     with:
-      ENVIRONMENT: "dev"
-      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_REGION: ${{ needs.setup-env.outputs.AWS_REGION }}
+      ENVIRONMENT: ${{ needs.setup-env.outputs.ENVIRONMENT }}
     secrets:
       DOMAINNAME: ${{ secrets.DOMAINNAME }}
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
