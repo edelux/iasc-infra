@@ -31,7 +31,7 @@ jobs:
     needs: setup-env
     uses: edelux/terraform-template/.github/workflows/deploy.yaml@main
     with:
-      ENVIRONMENT: dev
+      ENVIRONMENT: "dev"
       AWS_REGION: ${{ vars.AWS_REGION }}
     secrets:
       DOMAINNAME: ${{ secrets.DOMAINNAME }}
