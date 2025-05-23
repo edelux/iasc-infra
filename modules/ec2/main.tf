@@ -78,6 +78,7 @@ EOF
 }
 
 resource "aws_route53_record" "bastion_public" {
+  count   = var.wakeup ? 1 : 0
   zone_id = var.public_zone_id
   name    = "bastion"
   type    = "A"
@@ -86,6 +87,7 @@ resource "aws_route53_record" "bastion_public" {
 }
 
 resource "aws_route53_record" "bastion_private" {
+  count   = var.wakeup ? 1 : 0
   zone_id = var.public_zone_id
   name    = "tools"
   type    = "A"
