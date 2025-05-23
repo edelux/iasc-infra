@@ -70,37 +70,6 @@ output "database_subnet_cidrs" {
   value       = module.vpc.database_subnet_cidrs
 }
 
-## Security Groups
-output "postgresql_sg_id" {
-  description = "RDS Postgres Security Group ID"
-  value       = module.security.postgresql_sg_id
-}
-
-output "postgresql_sg_arn" {
-  description = "RDS Postgres Security Group ARN"
-  value       = module.security.postgresql_sg_arn
-}
-
-output "postgresql_sg_name" {
-  description = "RDS Postgres Security Group Name"
-  value       = module.security.postgresql_sg_name
-}
-
-output "ssh_sg_id" {
-  description = "SSH Security Group ID"
-  value       = module.security.ssh_sg_id
-}
-
-output "ssh_sg_arn" {
-  description = "SSH Security Group ARN"
-  value       = module.security.ssh_sg_arn
-}
-
-output "ssh_sg_name" {
-  description = "SSH Security Group Name"
-  value       = module.security.ssh_sg_name
-}
-
 ## ec2
 output "bastion_public_dns" {
   description = "Public DNS of the Bastion Host"
@@ -166,4 +135,8 @@ output "delegation_set_info" {
 output "delegation_set_name_servers" {
   description = "Delegation Set complete information"
   value       = module.zones.delegation_set_name_servers
+}
+
+output "zone_ids" {
+  value = module.zones.route53_zone_zone_id
 }

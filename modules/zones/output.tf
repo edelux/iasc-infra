@@ -43,3 +43,13 @@ output "delegation_set_name_servers" {
   description = "Name servers from the delegation set"
   value       = module.delegation_set.route53_delegation_set_name_servers["global"]
 }
+
+output "route53_zone_zone_id" {
+  description = "Mapa de zone_id de las zonas creadas"
+  value       = module.zones.route53_zone_zone_id
+}
+
+output "public_zone_id" {
+  description = "ID de la zona pública"
+  value       = module.zones.route53_zone_zone_id["${terraform.workspace}.${var.domain}"]
+}

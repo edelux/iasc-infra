@@ -26,15 +26,14 @@ variable "environment" { #REQUIRED
   }
 }
 
-variable "domain" {
-  description = "Route53 Managed DNS"
-  type        = string
-  default     = "acme.com"
-  validation {
-    condition     = can(regex("^[a-z0-9.]+$", var.domain))
-    error_message = "The domain name must contain only lowercase letters, numbers, or dots (.)."
-  }
-}
+#variable "domain" {
+#  description = "Route53 Managed DNS"
+#  type        = string
+#  validation {
+#    condition     = can(regex("^[a-z0-9.]+$", var.domain))
+#    error_message = "The domain name must contain only lowercase letters, numbers, or dots (.)."
+#  }
+#}
 
 variable "cidr" {
   description = "CIDR block for the VPC"
@@ -82,10 +81,4 @@ variable "ssh_keys" {
   type        = list(string)
   default     = [null]
   description = "Public SSH Keys"
-}
-
-variable "bastion-wakeup" {
-  description = "Power on Bastion Host"
-  type        = bool
-  default     = false
 }

@@ -19,13 +19,9 @@ module "zones" {
 
   zones = {
     "${terraform.workspace}.${var.domain}" = {
-
-      comment           = "${var.domain} (${terraform.workspace})"
+      comment           = "Public zone for ${terraform.workspace}.${var.domain}"
       delegation_set_id = module.delegation_set.route53_delegation_set_id["global"]
-
-      tags = {
-        Name = "${terraform.workspace}.${var.domain}"
-      }
+      private_zone      = false
     }
   }
   depends_on = [module.delegation_set]
