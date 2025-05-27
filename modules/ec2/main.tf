@@ -40,7 +40,7 @@ locals {
 module "ec2" {
   source = "terraform-aws-modules/ec2-instance/aws"
 
-  name          = "bastion"
+  name          = var.name
   create        = var.wakeup
   instance_type = var.type
   ami           = local.selected_ami
@@ -77,18 +77,20 @@ EOF
   }
 }
 
-resource "aws_route53_record" "bastion_public" {
+resource "aws_route53_record" "bastion" {
   count   = var.wakeup ? 1 : 0
   zone_id = var.public_zone_id
-  name    = "bastion"
+  #zone_id = var.domain_zone_id
+  name    = var.name
   type    = "A"
   ttl     = 300
   records = [module.ec2.public_ip]
 }
 
-resource "aws_route53_record" "bastion_private" {
+resource "aws_route53_record" "tools" {
   count   = var.wakeup ? 1 : 0
   zone_id = var.public_zone_id
+  #zone_id = var.domain_zone_id
   name    = "tools"
   type    = "A"
   ttl     = 300

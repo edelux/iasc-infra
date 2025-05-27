@@ -70,27 +70,6 @@ output "database_subnet_cidrs" {
   value       = module.vpc.database_subnet_cidrs
 }
 
-## ec2
-output "bastion_public_dns" {
-  description = "Public DNS of the Bastion Host"
-  value       = module.ec2.bastion_public_dns
-}
-
-output "bastion_private_dns" {
-  description = "Private DNS of the Bastion Host"
-  value       = module.ec2.bastion_private_dns
-}
-
-output "bastion_public_ip" {
-  description = "Public IP of the Bastion Host"
-  value       = module.ec2.bastion_public_ip
-}
-
-output "bastion_private_ip" {
-  description = "Private IP of the Bastion Host"
-  value       = module.ec2.bastion_private_ip
-}
-
 ## route53 zones
 output "parent_zone_id" {
   description = "route53 zone ID for domain"
@@ -139,4 +118,25 @@ output "delegation_set_name_servers" {
 
 output "zone_ids" {
   value = module.zones.route53_zone_zone_id
+}
+
+## ec2
+output "bastion_public_dns" {
+  description = "Public DNS of the Bastion Host"
+  value       = module.ec2.public_dns
+}
+
+output "bastion_private_dns" {
+  description = "Private DNS of the Bastion Host"
+  value       = module.ec2.private_dns
+}
+
+output "bastion_public_ip" {
+  description = "Public IP of the Bastion Host"
+  value       = module.ec2.public_ip
+}
+
+output "bastion_private_ip" {
+  description = "Private IP of the Bastion Host"
+  value       = module.ec2.private_ip
 }

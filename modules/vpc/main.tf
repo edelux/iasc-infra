@@ -29,7 +29,6 @@ module "vpc" {
   database_subnets       = local.database_subnets
   database_subnet_names  = local.database_subnet_names
 
-
   public_subnet_tags = {
     "kubernetes.io/role/elb" = 1
   }

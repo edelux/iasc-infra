@@ -3,15 +3,25 @@ domain: .com
 
 environments:
   dev:
-    zones_numbers: 2
-    regions: us-east-1
-    cidr_subnet_bits: 6
-    cidr: "172.18.0.0/16"
-    instance-wakeup: false
-    high_availability: false
-    instance-type: t3.small
-    ip_access_allow: ["#.#.#.#/32"]
-    ssh_keys:
-      - ssh-ed25519
-      - ssh-rsa
+    cloud:
+      provider: aws
+      region: us-east-1
+      account_id:
+
+    networking:
+      cidr: "172.18.0.0/16"
+      zones_numbers: 2
+      cidr_subnet_bits: 6
+      high_availability: false
+
+    hosts:
+      name: bastion
+      wakeup: true
+      type: t3.nano
+
+    security:
+      ip_access_allow:
+      ssh_keys:
+        - ssh-ed25519
+        - ssh-rsa
 ...
