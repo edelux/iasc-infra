@@ -1,9 +1,4 @@
 
-data "aws_route53_zone" "parent" {
-  name         = var.domain
-  private_zone = false
-}
-
 module "delegation_set" {
   source = "terraform-aws-modules/route53/aws//modules/delegation-sets"
 
@@ -28,7 +23,7 @@ module "zones" {
 }
 
 resource "aws_route53_record" "delegation" {
-  zone_id = data.aws_route53_zone.parent.zone_id
+  zone_id = var.zone_id
   name    = terraform.workspace
   type    = "NS"
   ttl     = 300

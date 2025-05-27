@@ -1,19 +1,4 @@
 
-output "parent_zone_id" {
-  description = "route53 parent domain zone ID"
-  value       = data.aws_route53_zone.parent.zone_id
-}
-
-output "parent_zone_arn" {
-  description = "route53 parent domain zone ARN"
-  value       = "arn:aws:route53:::hostedzone/${data.aws_route53_zone.parent.zone_id}"
-}
-
-output "parent_zone_name" {
-  description = "route53 parent domain zone Name"
-  value       = data.aws_route53_zone.parent.name
-}
-
 output "domain_zone_id" {
   description = "route53 zone ID"
   value       = module.zones.route53_zone_zone_id

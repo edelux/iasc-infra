@@ -26,14 +26,11 @@ variable "environment" { #REQUIRED
   }
 }
 
-#variable "domain" {
-#  description = "Route53 Managed DNS"
-#  type        = string
-#  validation {
-#    condition     = can(regex("^[a-z0-9.]+$", var.domain))
-#    error_message = "The domain name must contain only lowercase letters, numbers, or dots (.)."
-#  }
-#}
+variable "domain" { #REQUIRED
+  description = "Route53 Managed DNS"
+  type        = string
+  default     = ""
+}
 
 variable "cidr" {
   description = "CIDR block for the VPC"
@@ -81,4 +78,43 @@ variable "ssh_keys" {
   type        = list(string)
   default     = [null]
   description = "Public SSH Keys"
+}
+
+
+
+
+locals {
+  yaml_data = yamldecode(file("config.yaml"))
+  env_data  = lookup(local.yaml_data.environments, var.environment, {})
+
+  ## Cloud Provider
+  provider   = local.env_data.cloud.provider
+  region     = local.env_data.cloud.region
+  account_id = local.env_data.cloud.account_id
+
+  ## VPC
+  cidr              = local.env_data.networking.cidr
+  zones_numbers     = local.env_data.networking.zones_numbers
+  cidr_subnet_bits  = local.env_data.networking.cidr_subnet_bits
+  high_availability = local.env_data.networking.high_availability
+
+  ## route53 domain
+  domain = local.yaml_data.domain
+
+  ## Security
+  ip_access_allow = local.env_data.security.ip_access_allow
+  ssh_keys        = local.env_data.security.ssh_keys
+
+  ## ec2
+  name   = local.env_data.hosts.name
+  wakeup = local.env_data.hosts.wakeup
+  type   = local.env_data.hosts.type
+}
+
+
+
+
+data "aws_route53_zone" "parent" {
+  name         = local.domain
+  private_zone = false
 }
