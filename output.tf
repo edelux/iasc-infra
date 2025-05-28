@@ -5,6 +5,11 @@ output "region" {
   value       = var.region
 }
 
+output "vpc_cidr" {
+  description = "VPC CIDR"
+  value       = local.cidr
+}
+
 output "vpc_id" {
   description = "VPC ID Created"
   value       = module.vpc.vpc_id
@@ -74,19 +79,19 @@ output "database_subnet_cidrs" {
 output "parent_zone_id" {
   description = "route53 zone ID for domain"
   #value       = module.zones.parent_zone_id
-  value       = data.aws_route53_zone.parent.zone_id
+  value = data.aws_route53_zone.parent.zone_id
 }
 
 output "parent_zone_arn" {
   description = "route53 zone ARN for domain"
   #value       = module.zones.parent_zone_arn
-  value       = "arn:aws:route53:::hostedzone/${data.aws_route53_zone.parent.zone_id}"
+  value = "arn:aws:route53:::hostedzone/${data.aws_route53_zone.parent.zone_id}"
 }
 
 output "parent_zone_name" {
   description = "route53 zone Name for domain"
   #value       = module.zones.parent_zone_name
-  value       = data.aws_route53_zone.parent.name
+  value = data.aws_route53_zone.parent.name
 }
 
 output "domain_zone_id" {
