@@ -2,6 +2,7 @@
 module "vpc" {
   source            = "./modules/vpc"
   cidr              = local.cidr
+  project           = local.project
   zones_numbers     = local.zones_numbers
   cidr_subnet_bits  = local.cidr_subnet_bits
   high_availability = local.high_availability

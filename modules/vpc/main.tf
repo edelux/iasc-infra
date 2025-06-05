@@ -16,7 +16,7 @@ module "vpc" {
 
   azs                    = local.azs
   cidr                   = var.cidr
-  name                   = "${terraform.workspace}-vpc"
+  name                   = "${terraform.workspace}-${var.project}-vpc"
   enable_dns_hostnames   = true
   enable_dns_support     = true
   enable_nat_gateway     = true
@@ -38,6 +38,7 @@ module "vpc" {
   }
 
   tags = {
+    Project     = var.project
     Terraform   = "true"
     Environment = terraform.workspace
   }

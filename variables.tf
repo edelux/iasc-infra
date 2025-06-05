@@ -87,6 +87,8 @@ locals {
   yaml_data = yamldecode(file("config.yaml"))
   env_data  = lookup(local.yaml_data.environments, var.environment, {})
 
+  project = local.yaml_data.project
+
   ## Cloud Provider
   provider   = local.env_data.cloud.provider
   region     = local.env_data.cloud.region

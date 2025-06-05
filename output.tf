@@ -1,8 +1,23 @@
 
-## VPC
+## locals
 output "region" {
   description = "Region"
-  value       = var.region
+  value       = local.env_data.cloud.region
+}
+
+output "project" {
+  description = "Project Name"
+  value       = local.project
+}
+
+output "account_id" {
+  description = "Account ID"
+  value       = local.env_data.cloud.account_id
+}
+
+output "ip_access_allow" {
+  description = "Trusted IP address ranges"
+  value       = local.env_data.security.ip_access_allow
 }
 
 output "vpc_cidr" {
@@ -10,6 +25,17 @@ output "vpc_cidr" {
   value       = local.cidr
 }
 
+output "high_availability" {
+  description = "VPC High Availability"
+  value       = local.env_data.networking.high_availability
+}
+
+output "ssh_keys" {
+  description = "SSH Public Keys allowed"
+  value       = local.env_data.security.ssh_keys
+}
+
+## VPC
 output "vpc_id" {
   description = "VPC ID Created"
   value       = module.vpc.vpc_id
@@ -78,20 +104,24 @@ output "database_subnet_cidrs" {
 ## route53 zones
 output "parent_zone_id" {
   description = "route53 zone ID for domain"
+  value       = data.aws_route53_zone.parent.zone_id
   #value       = module.zones.parent_zone_id
-  value = data.aws_route53_zone.parent.zone_id
 }
 
 output "parent_zone_arn" {
   description = "route53 zone ARN for domain"
+  value       = "arn:aws:route53:::hostedzone/${data.aws_route53_zone.parent.zone_id}"
   #value       = module.zones.parent_zone_arn
-  value = "arn:aws:route53:::hostedzone/${data.aws_route53_zone.parent.zone_id}"
 }
 
 output "parent_zone_name" {
   description = "route53 zone Name for domain"
-  #value       = module.zones.parent_zone_name
-  value = data.aws_route53_zone.parent.name
+  value       = data.aws_route53_zone.parent.name
+}
+
+output "domain" {
+  description = "Domain name"
+  value       = data.aws_route53_zone.parent.name
 }
 
 output "domain_zone_id" {
