@@ -13,14 +13,19 @@ environments:
       zones_numbers: 2
       cidr_subnet_bits: 6
       high_availability: false
+      subnets:
+        private: true
+        public: true
+        database: true
 
     hosts:
       name: bastion
       wakeup: true
-      type: t3.nano
+      type: t4g.nano
+      distro: debian
 
     security:
-      ip_access_allow:
+      ip_access_allow: [""]
       ssh_keys:
         - ssh-ed25519
         - ssh-rsa

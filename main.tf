@@ -20,6 +20,7 @@ module "ec2" {
   source            = "./modules/ec2"
   name              = local.name
   type              = local.type
+  distro            = local.distro
   wakeup            = local.wakeup
   domain            = local.domain
   ssh_keys          = local.ssh_keys

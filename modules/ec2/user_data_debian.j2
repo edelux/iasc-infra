@@ -1,0 +1,37 @@
+#!/bin/bash
+set -e
+
+# Debian setup
+export DEBIAN_FRONTEND=noninteractive
+
+# Install packages
+apt update -qq
+apt upgrade -y
+apt install -y tmux j2cli yq gettext moreutils docker.io ansible postgresql-client mariadb-client
+apt install -y locales-all util-linux-locales
+locale-gen en_US.UTF-8
+
+# Create user directory and setup SSH
+mkdir -p /home/${user}/.ssh
+touch /home/${user}/.hushlogin
+
+# Add SSH keys
+cat <<EOK>> /home/${user}/.ssh/authorized_keys
+%{ for key in ssh_keys ~}
+${key}
+%{ endfor ~}
+EOK
+
+# Set permissions
+chmod 700 /home/${user}/.ssh
+chmod 600 /home/${user}/.ssh/authorized_keys
+chown -R ${user}:${user} /home/${user}/.ssh
+
+# User setup
+usermod -aG docker ${user}
+
+# Docker service
+systemctl enable docker && systemctl start docker
+
+# Log completion
+echo "Debian setup completed at $(date)" >> /var/log/cloud-init-setup.log

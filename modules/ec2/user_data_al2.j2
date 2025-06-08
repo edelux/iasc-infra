@@ -1,0 +1,34 @@
+#!/bin/bash
+set -e
+
+# Amazon Linux 2 setup
+yum update -y
+
+# Install packages
+amazon-linux-extras install -y postgresql14 ansible2 docker
+yum install -y nc tmux mariadb105-client-utils gettext
+
+# Create user directory and setup SSH
+mkdir -p /home/${user}/.ssh
+touch /home/${user}/.hushlogin
+
+# Add SSH keys
+cat <<EOK>> /home/${user}/.ssh/authorized_keys
+%{ for key in ssh_keys ~}
+${key}
+%{ endfor ~}
+EOK
+
+# Set permissions
+chmod 700 /home/${user}/.ssh
+chmod 600 /home/${user}/.ssh/authorized_keys
+chown -R ${user}:${user} /home/${user}/.ssh
+
+# User setup
+usermod -aG docker ${user}
+
+# Docker service
+systemctl enable docker && systemctl start docker
+
+# Log completion
+echo "Amazon Linux 2 setup completed at $(date)" >> /var/log/cloud-init-setup.log

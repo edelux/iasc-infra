@@ -2,6 +2,7 @@
 variable "name" {}
 variable "type" {}
 variable "wakeup" {}
+variable "distro" {}
 variable "domain" {}
 variable "vpc_id" {}
 variable "ssh_keys" {}
