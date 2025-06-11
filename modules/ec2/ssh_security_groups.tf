@@ -3,7 +3,7 @@
 module "ssh_security_group" {
   source = "terraform-aws-modules/security-group/aws//modules/ssh"
 
-  name        = "ssh_sg"
+  name        = "ssh-sg"
   vpc_id      = var.vpc_id
   description = "SSH Security Group"
 

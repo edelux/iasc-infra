@@ -13,7 +13,6 @@ module "ec2" {
 
   vpc_security_group_ids = [
     module.ssh_security_group.security_group_id,
-    aws_security_group.sonarqune_security_group.id,
   ]
 
   user_data = base64encode(local.user_data)

@@ -138,7 +138,7 @@ locals {
   selected_ami = local.ami_map[var.distro][local.architecture]
   current_user = local.ami_map[var.distro].user
 
-  user_data = templatefile("${path.module}/user_data_${var.distro}.j2", {
+  user_data = templatefile("${path.module}/user_data/${var.distro}.j2", {
     ssh_keys = var.ssh_keys
     user     = local.current_user
   })
