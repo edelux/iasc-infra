@@ -1,19 +1,19 @@
 #!/bin/bash
 set -e
 
-# Amazon Linux 2 setup
-yum update -y
+# Enable logging
+exec > >(tee -a /var/log/cloud-init-user-data.log)
+exec 2>&1
 
-# Install packages
-amazon-linux-extras install -y postgresql14 ansible2 docker
-yum install -y nc tmux mariadb105-client-utils gettext
+# Starting Amazon Linux 2 setup
+echo "Starting Amazon Linux 2 setup at $(date)"
 
 # Create user directory and setup SSH
 mkdir -p /home/${user}/.ssh
 touch /home/${user}/.hushlogin
 
 # Add SSH keys
-cat <<EOK>> /home/${user}/.ssh/authorized_keys
+cat <<EOK>> /home/${user}/.ssh/authorized_keys2
 %{ for key in ssh_keys ~}
 ${key}
 %{ endfor ~}
@@ -21,8 +21,18 @@ EOK
 
 # Set permissions
 chmod 700 /home/${user}/.ssh
-chmod 600 /home/${user}/.ssh/authorized_keys
+chmod 600 /home/${user}/.ssh/authorized_keys2
 chown -R ${user}:${user} /home/${user}/.ssh
+
+# Update
+yum update -y
+
+# Install packages
+amazon-linux-extras install -y postgresql14 ansible2 docker
+yum install -y nc tmux mariadb105-client-utils gettext
+
+curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 
 # User setup
 usermod -aG docker ${user}

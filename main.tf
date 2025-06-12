@@ -19,6 +19,7 @@ module "zones" {
 module "ec2" {
   source            = "./modules/ec2"
   name              = local.name
+  size              = local.size
   type              = local.type
   distro            = local.distro
   wakeup            = local.wakeup

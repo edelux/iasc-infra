@@ -1,24 +1,19 @@
 #!/bin/bash
 set -e
 
-# Ubuntu setup
-export DEBIAN_FRONTEND=noninteractive
-export DEBCONF_NOWARNINGS=yes
+# Enable logging
+exec > >(tee -a /var/log/cloud-init-user-data.log)
+exec 2>&1
 
-# Install packages
-apt update -qq
-apt upgrade -y
-apt install -y tmux j2cli yq gettext moreutils docker.io docker-compose-v2 postgresql-client mariadb-client
-apt install -y locales-all util-linux-locales
-locale-gen en_US.UTF-8
-
+# Starting Ubuntu setup
+echo "Starting Ubuntu setup at $(date)"
 
 # Create user directory and setup SSH
 mkdir -p /home/${user}/.ssh
 touch /home/${user}/.hushlogin
 
 # Add SSH keys
-cat <<EOK>> /home/${user}/.ssh/authorized_keys
+cat <<EOK>> /home/${user}/.ssh/authorized_keys2
 %{ for key in ssh_keys ~}
 ${key}
 %{ endfor ~}
@@ -26,14 +21,24 @@ EOK
 
 # Set permissions
 chmod 700 /home/${user}/.ssh
-chmod 600 /home/${user}/.ssh/authorized_keys
+chmod 600 /home/${user}/.ssh/authorized_keys2
 chown -R ${user}:${user} /home/${user}/.ssh
 
-# User setup
-usermod -aG docker ${user}
+export DEBIAN_FRONTEND=noninteractive
+export DEBCONF_NOWARNINGS=yes
 
-# Docker service
+# Install packages
+apt update -qq
+apt upgrade -y
+
+apt install -y docker.io
+usermod -aG docker ${user}
 systemctl enable docker && systemctl start docker
+apt install -y docker-compose-v2
+
+apt install -y tmux j2cli yq gettext moreutils postgresql-client mariadb-client
+apt install -y util-linux-locales
+locale-gen en_US.UTF-8
 
 # Log completion
 echo "Ubuntu setup completed at $(date)" >> /var/log/cloud-init-setup.log

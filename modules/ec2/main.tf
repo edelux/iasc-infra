@@ -1,18 +1,29 @@
 
-
 module "ec2" {
   source = "terraform-aws-modules/ec2-instance/aws"
 
   name          = var.name
-  create        = var.wakeup
   instance_type = var.type
+  create        = var.wakeup
+  key_name      = "edeluquez"
   ami           = local.selected_ami
   subnet_id     = var.public_subnet_ids[0]
+  monitoring    = true
 
   associate_public_ip_address = true
 
+  root_block_device = [
+    {
+      volume_type           = "gp3"
+      volume_size           = var.size
+      delete_on_termination = true
+      encrypted             = true
+    }
+  ]
+
   vpc_security_group_ids = [
     module.ssh_security_group.security_group_id,
+    module.wireguard_security_group.security_group_id,
   ]
 
   user_data = base64encode(local.user_data)

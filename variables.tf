@@ -109,6 +109,7 @@ locals {
 
   ## ec2
   name   = local.env_data.hosts.name
+  size   = local.env_data.hosts.size
   type   = local.env_data.hosts.type
   distro = local.env_data.hosts.distro
   wakeup = local.env_data.hosts.wakeup

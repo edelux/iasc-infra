@@ -86,7 +86,7 @@ data "aws_ami" "ubuntu_x86_64_latest" {
   owners      = ["099720109477"] # Canonical
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd-gp3/ubuntu-*24.04*-server-*"]
   }
   filter {
     name   = "architecture"
@@ -99,7 +99,7 @@ data "aws_ami" "ubuntu_arm64_latest" {
   owners      = ["099720109477"] # Canonical
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-arm64-server-*"]
+    values = ["ubuntu/images/hvm-ssd-gp3/ubuntu-*24.04*-server-*"]
   }
   filter {
     name   = "architecture"

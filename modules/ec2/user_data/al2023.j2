@@ -1,18 +1,19 @@
 #!/bin/bash
 set -e
 
-# Amazon Linux 2023 setup
-dnf update -y
+# Enable logging
+exec > >(tee -a /var/log/cloud-init-user-data.log)
+exec 2>&1
 
-# Install packages
-dnf install -y docker postgresql15 ansible nc tmux mariadb-client gettext
+# Starting Amazon Linux 2023 setup
+echo "Starting Amazon Linux 2023 setup at $(date)"
 
 # Create user directory and setup SSH
 mkdir -p /home/${user}/.ssh
 touch /home/${user}/.hushlogin
 
 # Add SSH keys
-cat <<EOK>> /home/${user}/.ssh/authorized_keys
+cat <<EOK>> /home/${user}/.ssh/authorized_keys2
 %{ for key in ssh_keys ~}
 ${key}
 %{ endfor ~}
@@ -20,8 +21,17 @@ EOK
 
 # Set permissions
 chmod 700 /home/${user}/.ssh
-chmod 600 /home/${user}/.ssh/authorized_keys
+chmod 600 /home/${user}/.ssh/authorized_keys2
 chown -R ${user}:${user} /home/${user}/.ssh
+
+# Amazon Linux 2023 setup
+dnf update -y
+
+# Install packages
+dnf install -y docker postgresql17 mariadb1011-client-utils ansible nc tmux gettext
+
+curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 
 # User setup
 usermod -aG docker ${user}

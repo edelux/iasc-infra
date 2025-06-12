@@ -1,4 +1,5 @@
 ---
+project: ftva
 domain: .com
 
 environments:
@@ -19,6 +20,7 @@ environments:
         database: true
 
     hosts:
+      size: 8
       name: bastion
       wakeup: true
       type: t4g.nano

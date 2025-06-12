@@ -1,5 +1,6 @@
 
 variable "name" {}
+variable "size" {}
 variable "type" {}
 variable "wakeup" {}
 variable "distro" {}
