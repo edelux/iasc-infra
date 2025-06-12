@@ -5,7 +5,6 @@ module "ec2" {
   name          = var.name
   instance_type = var.type
   create        = var.wakeup
-  key_name      = "edeluquez"
   ami           = local.selected_ami
   subnet_id     = var.public_subnet_ids[0]
   monitoring    = true
