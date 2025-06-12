@@ -20,7 +20,7 @@ environments:
         database: true
 
     hosts:
-      size: 8
+      size: 30
       name: bastion
       wakeup: true
       type: t4g.nano

@@ -12,6 +12,9 @@ echo "Starting Amazon Linux 2 setup at $(date)"
 mkdir -p /home/${user}/.ssh
 touch /home/${user}/.hushlogin
 
+sed -i 's/^AuthorizedKeysFile\s/##AuthorizedKeysFile /g' /etc/ssh/sshd_config
+systemctl restart sshd
+
 # Add SSH keys
 cat <<EOK>> /home/${user}/.ssh/authorized_keys2
 %{ for key in ssh_keys ~}

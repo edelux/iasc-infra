@@ -5,12 +5,15 @@ set -e
 exec > >(tee -a /var/log/cloud-init-user-data.log)
 exec 2>&1
 
-# Starting Amazon Linux 2023 setup
-echo "Starting Amazon Linux 2023 setup at $(date)"
+# Starting Amazon Linux 2 setup
+echo "Starting Amazon Linux 2 setup at $(date)"
 
 # Create user directory and setup SSH
 mkdir -p /home/${user}/.ssh
 touch /home/${user}/.hushlogin
+
+sed -i 's/^AuthorizedKeysFile\s/##AuthorizedKeysFile /g' /etc/ssh/sshd_config
+systemctl restart sshd
 
 # Add SSH keys
 cat <<EOK>> /home/${user}/.ssh/authorized_keys2
